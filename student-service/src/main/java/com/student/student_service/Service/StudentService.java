@@ -4,11 +4,13 @@ package com.student.student_service.Service;
 import com.student.student_service.dao.StudentRepository;
 import com.student.student_service.dto.StudentDto;
 import com.student.student_service.entity.Student;
+import com.student.student_service.exception.ResourceNotFoundException;
 import com.student.student_service.feign.ManagementFeignClient;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.module.ResolutionException;
 import java.util.List;
 
 @Service
@@ -46,7 +48,7 @@ public class StudentService {
     // Get student by id
     public Student getStudentById(Long id) {
         return studentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with id: " + id));
     }
     
     // Get students by class
@@ -80,7 +82,7 @@ public class StudentService {
     private void checkIfClassExists(Long classId) {
         Boolean classExists = managementFeignClient.doesClassExistById(classId).getBody();
         if (classExists!=null && !classExists) {
-            throw new EntityNotFoundException("Class not found with id: " + classId);
+            throw new ResourceNotFoundException("Class not found with id: " + classId);
         }
     }
 
