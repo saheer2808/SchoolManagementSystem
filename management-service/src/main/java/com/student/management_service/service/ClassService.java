@@ -4,6 +4,7 @@ import com.student.management_service.dao.ClassRepository;
 import com.student.management_service.dto.ClassDto;
 import com.student.management_service.entity.ClassEntity;
 import com.student.management_service.entity.Teacher;
+import com.student.management_service.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,15 @@ public class ClassService {
 
     public ClassEntity getClassById(Long id) {
         return classRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Class not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Class not found with id: " + id));
     }
 
     public boolean doesClassExistById(Long id) {
-        return classRepository.existsById(id);
+        var classExists = classRepository.existsById(id);
+        if (!classExists) {
+            throw new ResourceNotFoundException("Class not found with id: " + id);
+        }
+        return true;
     }
 
     public ClassEntity createClass(ClassDto cls) {
