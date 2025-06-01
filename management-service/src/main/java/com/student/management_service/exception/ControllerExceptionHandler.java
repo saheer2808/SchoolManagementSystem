@@ -17,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -152,6 +153,13 @@ public class ControllerExceptionHandler {
 	public ResponseEntity<ErrorMessage> MissingServletRequestParameterException(Exception e, HttpServletRequest request) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	//--------------------- Accessing unconfigured endpoints on server
+	@ExceptionHandler({NoResourceFoundException.class})
+	public ResponseEntity<ErrorMessage> handleNotFoundError(NoResourceFoundException ex, HttpServletRequest request) {
+		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND, HttpStatus.NOT_FOUND.value(), LocalDateTime.now(), "The requested URL " + request.getRequestURI() + " was not found on this server.", null);
+		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 	
 //-------------------- Fallback Handler

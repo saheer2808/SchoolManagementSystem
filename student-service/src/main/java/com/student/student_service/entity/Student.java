@@ -33,7 +33,6 @@ public class Student {
     @Column(name = "Email")
     @NotBlank(message = "Email is required")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Email should be valid")
-    @Max(value = 100, message = "Email should not exceed 100 characters")
     private String email;
 
     @Column(name = "Address")

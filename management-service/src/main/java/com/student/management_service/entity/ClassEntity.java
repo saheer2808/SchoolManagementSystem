@@ -19,7 +19,6 @@ public class ClassEntity {
     private Long classId;
 
     @NotBlank(message = "Class name is required")
-    @Size(max = 5, message = "Class name must be at most 2 characters")
     @Column(name = "ClassName")
     private String className;
 

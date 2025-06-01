@@ -58,11 +58,15 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
+//                .headers(headersConfigurer -> headersConfigurer.frameOptions(
+//                        frameOptions -> frameOptions.sameOrigin()  // Allow H2 console
+//                ))
             .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> 
                 auth.requestMatchers("/api/auth/**").permitAll()
                     .requestMatchers("/api/health/**").permitAll()
+//                        .requestMatchers("/h2-console/**").permitAll()
                     .anyRequest().authenticated()
             );
         

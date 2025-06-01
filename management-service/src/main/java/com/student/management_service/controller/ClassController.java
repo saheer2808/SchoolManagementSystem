@@ -35,4 +35,10 @@ public class ClassController {
         return new ResponseEntity<>(classExists, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/teacher")
+    public ResponseEntity<Long> getClassTeacherId(@PathVariable Long id) {
+        Long teacherId = classService.getClassTeacherId(id);
+        return new ResponseEntity<>(teacherId, HttpStatus.OK);
+    }
+
 }

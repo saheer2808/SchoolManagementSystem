@@ -43,5 +43,13 @@ public class ClassService {
         return classRepository.save(classEntity);
     }
 
+    public Long getClassTeacherId(Long id) {
+        ClassEntity classEntity = getClassById(id);
+        if (classEntity.getTeacher() != null) {
+            return classEntity.getTeacher().getTid();
+        } else {
+            throw new EntityNotFoundException("No teacher assigned to class with id: " + id);
+        }
+    }
 }
 
